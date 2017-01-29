@@ -28,12 +28,12 @@ export default class ToolbarExamplesSimple extends React.Component {
   
   render() {
     return (
-      <Toolbar>
+      <Toolbar className="navigation-bar">
         <ToolbarGroup firstChild={true}>
-          <RaisedButton label="Country" style={this.style} buttonStyle={{borderRadius: 0}}/>
+          <RaisedButton label="Country" style={this.style}/>
           <RaisedButton label="Airport" style={this.style}/>
-          <RaisedButton label="Time" style={this.style}/>
           <RaisedButton label="Address" style={this.style}/>
+          <RaisedButton label="Time" style={this.style}/>
           <RaisedButton label="Config" style={this.style}/>
         </ToolbarGroup>
         <ToolbarGroup>
