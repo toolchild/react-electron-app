@@ -3,6 +3,8 @@ import './CountryCodeField.css';
 import React from 'react';
 import * as _ from 'lodash';
 
+// import validator from "validator";
+
 import {AutoComplete, RaisedButton} from 'material-ui';
 
 export default class CountryCodeField extends React.Component {
@@ -272,16 +274,21 @@ export default class CountryCodeField extends React.Component {
   render() {
     return (
       <div className="country-code-field">
-        <AutoComplete floatingLabelText="Country Code" style={this.style}
-                      openOnFocus={true}
-                      filter={AutoComplete.caseInsensitiveFilter}
-                      dataSource={this.countryCodes}
-                      dataSourceConfig={ this.dataSourceConfig}
-                      className="country-code-autocomplete"
-                      onUpdateInput={this.onUpdateInput}
-                      searchText={this.state.countryCodeSearchText}
-                      menuProps={{maxHeight: 400}}
+        
+        <AutoComplete
+          name="countryCode" floatingLabelText="Country Code" style={this.style}
+          openOnFocus={true}
+          filter={AutoComplete.caseInsensitiveFilter}
+          dataSource={this.countryCodes}
+          dataSourceConfig={ this.dataSourceConfig}
+          className="country-code-autocomplete"
+          onUpdateInput={this.onUpdateInput}
+          searchText={this.state.countryCodeSearchText}
+          menuProps={{maxHeight: 400}}
+          hintText='2 letter code, can be empty'
+          errorText={this.state.countryCodeErrorText}
         />
+        
         <RaisedButton label="Add" className="raised-button" onClick={this.addCountryCode}/>
         <div>
           {this.renderSelectedCountryCodes()}
@@ -290,8 +297,10 @@ export default class CountryCodeField extends React.Component {
     );
   }
   
+
+  
   addCountryCode(button) {
-    if (!_.includes(this.state.selectedCountries, this.state.countryCodeSearchText) && this.state.countryCodeSearchText !== '') {
+    if (!_.includes(this.state.selectedCountries, this.state.countryCodeSearchText) && this.state.countryCodeSearchText.length ===2 ) {
       this.setState((prevState, props) => {
         return {
           ...prevState,
@@ -303,6 +312,7 @@ export default class CountryCodeField extends React.Component {
       this.setState((prevState, props) => {
         return {
           ...prevState,
+          countryCodeErrorText: '',
           countryCodeSearchText: '',
         }
       });
@@ -313,9 +323,8 @@ export default class CountryCodeField extends React.Component {
     let innerText = button.target.innerText;
     if (_.includes(this.state.selectedCountries, innerText)) {
       
-      
       this.setState((prevState, props) => {
-      let nextSelectedCountries = _.filter(prevState.selectedCountries, prevCountry => prevCountry !== innerText);
+        let nextSelectedCountries = _.filter(prevState.selectedCountries, prevCountry => prevCountry !== innerText);
         return {
           ...prevState,
           selectedCountries: nextSelectedCountries
@@ -324,11 +333,19 @@ export default class CountryCodeField extends React.Component {
     }
   }
   
-  onUpdateInput = (countryCodeText) => {
-    this.setState({
-      countryCodeSearchText: countryCodeText.toUpperCase(),
-    });
-  };
+  onUpdateInput(countryCodeText) {
+    if (countryCodeText.length === 2 || countryCodeText.length === 0) {
+      this.setState({
+        countryCodeErrorText: '',
+        countryCodeSearchText: countryCodeText.toUpperCase(),
+      });
+    } else {
+      this.setState({
+        countryCodeErrorText: 'must be empty or 2 signs',
+        countryCodeSearchText: countryCodeText.toUpperCase()
+      });
+    }
+  }
   
   renderSelectedCountryCodes() {
     let selectedCountryCodeButtons = [];

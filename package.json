@@ -4,14 +4,15 @@
   "private": true,
   "devDependencies": {
     "electron": "^1.4.14",
-    "foreman": "^2.0.0",
-    "react-scripts": "0.8.5"
+    "foreman": "^2.0.0"
   },
   "dependencies": {
+    "create-react-app": "^1.0.3",
     "lodash": "^4.17.4",
     "material-ui": "^0.16.7",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-scripts": "^0.8.5",
     "react-split-pane": "^0.1.57",
     "react-tap-event-plugin": "^2.0.1"
   },
